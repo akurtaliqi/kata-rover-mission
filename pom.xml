@@ -24,6 +24,7 @@
 </dependencies>
 
 <build>
+    <finalName>rover</finalName>
     <plugins>
 
         <plugin>
@@ -45,10 +46,37 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>fr.aku.rovermission.RoverMissionApp</mainClass>
+                        <mainClass>fr.aku.rovermission.RoverMissionApplication</mainClass>
                     </manifest>
                 </archive>
             </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.3.1</version>
+            <executions>
+                <execution>
+                    <id>copy-jar-to-project-root</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.basedir}</outputDirectory>
+                        <overwrite>true</overwrite>
+                        <resources>
+                            <resource>
+                                <directory>${project.build.directory}</directory>
+                                <includes>
+                                    <include>${project.build.finalName}.jar</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+            </executions>
         </plugin>
 
     </plugins>
