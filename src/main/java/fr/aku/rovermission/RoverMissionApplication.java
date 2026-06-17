@@ -1,0 +1,54 @@
+package fr.aku.rovermission;
+
+import fr.aku.rovermission.application.MissionPlan;
+import fr.aku.rovermission.application.MissionRunner;
+import fr.aku.rovermission.infrastructure.input.MissionPlanParser;
+import fr.aku.rovermission.domain.Mission;
+import fr.aku.rovermission.domain.Rover;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+public class RoverMissionApplication {
+
+    private static final Logger LOGGER = Logger.getLogger(RoverMissionApplication.class.getName());
+
+    private final MissionPlanParser missionPlanParser = new MissionPlanParser();
+    private final MissionRunner missionRunner = new MissionRunner();
+
+    public static void main(String[] args) throws IOException {
+        if (args.length != 1) {
+            throw new IllegalArgumentException("Expected exactly one input file path");
+        }
+
+        String input = Files.readString(Path.of(args[0]));
+        String output = new RoverMissionApplication().run(input);
+        LOGGER.log(Level.INFO, output);
+    }
+
+    public String run(String input) {
+        MissionPlan missionPlan = missionPlanParser.parse(input);
+
+        return missionPlan.missions().stream()
+            .map(mission -> runMission(missionPlan, mission))
+            .reduce((first, second) -> first + System.lineSeparator() + second)
+            .orElse("");
+    }
+
+    private String runMission(MissionPlan missionPlan, Mission mission) {
+        missionRunner.run(mission, missionPlan.plateau());
+
+        Rover rover = mission.rover();
+        return "%d %d %s".formatted(
+            rover.position().x(),
+            rover.position().y(),
+            rover.direction().code()
+        );
+    }
+}
