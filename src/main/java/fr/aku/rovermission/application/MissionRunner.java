@@ -1,7 +1,6 @@
 package fr.aku.rovermission.application;
 
 import fr.aku.rovermission.domain.Command;
-import fr.aku.rovermission.domain.Mission;
 import fr.aku.rovermission.domain.Plateau;
 
 public class MissionRunner {

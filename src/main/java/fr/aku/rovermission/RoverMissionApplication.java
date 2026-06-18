@@ -1,9 +1,9 @@
 package fr.aku.rovermission;
 
+import fr.aku.rovermission.application.Mission;
 import fr.aku.rovermission.application.MissionPlan;
 import fr.aku.rovermission.application.MissionRunner;
 import fr.aku.rovermission.infrastructure.InputFileParser;
-import fr.aku.rovermission.domain.Mission;
 import fr.aku.rovermission.domain.Rover;
 
 import java.io.IOException;

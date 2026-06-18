@@ -1,5 +1,6 @@
 package fr.aku.rovermission.domain;
 
+import fr.aku.rovermission.application.Mission;
 import fr.aku.rovermission.application.MissionRunner;
 import fr.aku.rovermission.infrastructure.InputFileParser;
 import org.junit.jupiter.api.Test;

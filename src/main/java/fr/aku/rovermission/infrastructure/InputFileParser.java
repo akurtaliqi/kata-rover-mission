@@ -1,9 +1,9 @@
 package fr.aku.rovermission.infrastructure;
 
+import fr.aku.rovermission.application.Mission;
 import fr.aku.rovermission.application.MissionPlan;
 import fr.aku.rovermission.domain.Command;
 import fr.aku.rovermission.domain.Direction;
-import fr.aku.rovermission.domain.Mission;
 import fr.aku.rovermission.domain.Plateau;
 import fr.aku.rovermission.domain.Position;
 import fr.aku.rovermission.domain.Rover;
