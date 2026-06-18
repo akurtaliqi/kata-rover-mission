@@ -8,9 +8,12 @@ public class MissionRunner {
     public void run(Mission mission, Plateau plateau) {
         for (Command command : mission.commands()) {
             switch (command) {
-                case LEFT -> mission.rover().turnLeft();
-                case RIGHT -> mission.rover().turnRight();
-                case MOVE -> mission.rover().move(plateau);
+                case LEFT ->
+                    mission.rover().turnLeft();
+                case RIGHT ->
+                    mission.rover().turnRight();
+                case MOVE ->
+                    mission.rover().move(plateau);
             }
         }
     }

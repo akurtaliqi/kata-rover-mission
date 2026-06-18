@@ -1,5 +1,13 @@
 package fr.aku.rovermission;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static java.util.stream.Collectors.joining;
+
 import fr.aku.rovermission.application.Mission;
 import fr.aku.rovermission.application.MissionPlan;
 import fr.aku.rovermission.application.MissionRunner;
@@ -10,19 +18,9 @@ import fr.aku.rovermission.domain.Position;
 import fr.aku.rovermission.domain.Rover;
 import fr.aku.rovermission.infrastructure.InputFileParser;
 
-import static java.util.stream.Collectors.joining;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class RoverMissionApplication {
 
     private static final Logger LOGGER = Logger.getLogger(RoverMissionApplication.class.getName());
-
     private static final InputFileParser inputFileParser = new InputFileParser();
     private static final MissionRunner missionRunner = new MissionRunner();
 
@@ -37,8 +35,8 @@ public class RoverMissionApplication {
         MissionPlan missionPlan = parseMissionPlan(parsedInput);
 
         return missionPlan.missions().stream()
-            .map(mission -> runMission(missionPlan, mission))
-            .collect(joining(System.lineSeparator()));
+                .map(mission -> runMission(missionPlan, mission))
+                .collect(joining(System.lineSeparator()));
     }
 
     private static void checkInputFilePath(String[] args) {
@@ -67,9 +65,11 @@ public class RoverMissionApplication {
     }
 
     private static List<Command> parseCommands(String commands) {
-        return commands.chars()
-            .mapToObj(command -> Command.fromCode((char) command))
-            .toList();
+        List<Command> result = new ArrayList<>(commands.length());
+        for (char code : commands.toCharArray()) {
+            result.add(Command.fromCode(code));
+        }
+        return result;
     }
 
     private static Plateau parsePlateau(String line) {
@@ -97,10 +97,9 @@ public class RoverMissionApplication {
 
         Rover rover = mission.rover();
         return "%d %d %s".formatted(
-            rover.position().x(),
-            rover.position().y(),
-            rover.direction().code()
-        );
+                rover.position().x(),
+                rover.position().y(),
+                rover.direction().code());
     }
 
 }

@@ -1,6 +1,7 @@
 package fr.aku.rovermission.domain;
 
 public class Plateau {
+
     private final int maxX;
     private final int maxY;
 

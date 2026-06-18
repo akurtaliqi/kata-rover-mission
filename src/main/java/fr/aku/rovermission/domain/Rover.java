@@ -3,6 +3,7 @@ package fr.aku.rovermission.domain;
 import java.util.logging.Logger;
 
 public class Rover {
+
     private static final Logger LOGGER = Logger.getLogger(Rover.class.getName());
     private Position position;
     private Direction direction;

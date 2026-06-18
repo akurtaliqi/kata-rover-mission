@@ -24,7 +24,7 @@ public enum Direction {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unknown direction: " + code));
     }
-    
+
     public String code() {
         return code;
     }

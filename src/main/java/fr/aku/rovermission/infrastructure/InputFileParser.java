@@ -9,8 +9,8 @@ public class InputFileParser {
 
     public List<String> readLines(Path inputFile) throws IOException {
         return Files.readAllLines(inputFile).stream()
-            .map(String::trim)
-            .filter(line -> !line.isEmpty())
-            .toList();
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .toList();
     }
 }

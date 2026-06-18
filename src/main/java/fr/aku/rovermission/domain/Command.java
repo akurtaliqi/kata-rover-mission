@@ -13,10 +13,14 @@ public enum Command {
 
     public static Command fromCode(char code) {
         return switch (code) {
-            case 'L' -> LEFT;
-            case 'R' -> RIGHT;
-            case 'M' -> MOVE;
-            default -> throw new IllegalArgumentException("Unknown command: " + code);
+            case 'L' ->
+                LEFT;
+            case 'R' ->
+                RIGHT;
+            case 'M' ->
+                MOVE;
+            default ->
+                throw new IllegalArgumentException("Unknown command: " + code);
         };
     }
 
