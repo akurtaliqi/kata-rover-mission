@@ -2,7 +2,7 @@ package fr.aku.rovermission;
 
 import fr.aku.rovermission.application.MissionPlan;
 import fr.aku.rovermission.application.MissionRunner;
-import fr.aku.rovermission.infrastructure.input.MissionPlanParser;
+import fr.aku.rovermission.infrastructure.InputFileParser;
 import fr.aku.rovermission.domain.Mission;
 import fr.aku.rovermission.domain.Rover;
 
@@ -19,7 +19,7 @@ public class RoverMissionApplication {
 
     private static final Logger LOGGER = Logger.getLogger(RoverMissionApplication.class.getName());
 
-    private final MissionPlanParser missionPlanParser = new MissionPlanParser();
+    private final InputFileParser inputFileParser = new InputFileParser();
     private final MissionRunner missionRunner = new MissionRunner();
 
     public static void main(String[] args) throws IOException {
@@ -33,7 +33,7 @@ public class RoverMissionApplication {
     }
 
     public String run(String input) {
-        MissionPlan missionPlan = missionPlanParser.parse(input);
+        MissionPlan missionPlan = inputFileParser.parseMissionPlan(input);
 
         return missionPlan.missions().stream()
             .map(mission -> runMission(missionPlan, mission))

@@ -1,20 +1,20 @@
 package fr.aku.rovermission.domain;
 
 import fr.aku.rovermission.application.MissionRunner;
-import fr.aku.rovermission.infrastructure.input.CommandParser;
+import fr.aku.rovermission.infrastructure.InputFileParser;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RoverTest {
 
-    private final CommandParser commandParser = new CommandParser();
+    private final InputFileParser inputFileParser = new InputFileParser();
     private final MissionRunner missionRunner = new MissionRunner();
 
     @Test
     void runMissionFromOneTwoNorthEndsAtOneThreeNorth() {
         Rover rover = new Rover(new Position(1, 2), Direction.NORTH);
-        Mission mission = new Mission(rover, commandParser.parse("LMLMLMLMM"));
+        Mission mission = new Mission(rover, inputFileParser.parseCommands("LMLMLMLMM"));
         Plateau plateau = new Plateau(5, 5);
 
         missionRunner.run(mission, plateau);

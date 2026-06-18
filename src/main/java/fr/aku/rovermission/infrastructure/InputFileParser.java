@@ -1,6 +1,7 @@
-package fr.aku.rovermission.infrastructure.input;
+package fr.aku.rovermission.infrastructure;
 
 import fr.aku.rovermission.application.MissionPlan;
+import fr.aku.rovermission.domain.Command;
 import fr.aku.rovermission.domain.Direction;
 import fr.aku.rovermission.domain.Mission;
 import fr.aku.rovermission.domain.Plateau;
@@ -10,11 +11,9 @@ import fr.aku.rovermission.domain.Rover;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MissionPlanParser {
+public class InputFileParser {
 
-    private final CommandParser commandParser = new CommandParser();
-
-    public MissionPlan parse(String input) {
+    public MissionPlan parseMissionPlan(String input) {
         List<String> lines = input.lines()
             .map(String::trim)
             .filter(line -> !line.isEmpty())
@@ -29,10 +28,25 @@ public class MissionPlanParser {
 
         for (int index = 1; index < lines.size(); index += 2) {
             Rover rover = parseRover(lines.get(index));
-            missions.add(new Mission(rover, commandParser.parse(lines.get(index + 1))));
+            missions.add(new Mission(rover, parseCommands(lines.get(index + 1))));
         }
 
         return new MissionPlan(plateau, missions);
+    }
+
+    public List<Command> parseCommands(String commands) {
+        return commands.chars()
+            .mapToObj(this::toCommand)
+            .toList();
+    }
+
+    private Command toCommand(int command) {
+        return switch (command) {
+            case 'L' -> Command.LEFT;
+            case 'R' -> Command.RIGHT;
+            case 'M' -> Command.MOVE;
+            default -> throw new IllegalArgumentException("Unknown command: " + (char) command);
+        };
     }
 
     private Plateau parsePlateau(String line) {
