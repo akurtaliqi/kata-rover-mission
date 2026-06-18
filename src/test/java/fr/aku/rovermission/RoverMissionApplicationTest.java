@@ -3,12 +3,13 @@ package fr.aku.rovermission;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 
-class RoverMissionAppTest {
+class RoverMissionApplicationTest {
 
     @Test
     void sample_input_produces_expected_output() {
-        String input = String.join(System.lineSeparator(),
+        List<String> input = List.of(
             "5 5",
             "1 2 N",
             "LMLMLMLMM",

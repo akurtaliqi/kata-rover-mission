@@ -3,14 +3,19 @@ package fr.aku.rovermission;
 import fr.aku.rovermission.application.Mission;
 import fr.aku.rovermission.application.MissionPlan;
 import fr.aku.rovermission.application.MissionRunner;
-import fr.aku.rovermission.infrastructure.InputFileParser;
+import fr.aku.rovermission.domain.Command;
+import fr.aku.rovermission.domain.Direction;
+import fr.aku.rovermission.domain.Plateau;
+import fr.aku.rovermission.domain.Position;
 import fr.aku.rovermission.domain.Rover;
+import fr.aku.rovermission.infrastructure.InputFileParser;
 
 import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,16 +23,22 @@ public class RoverMissionApplication {
 
     private static final Logger LOGGER = Logger.getLogger(RoverMissionApplication.class.getName());
 
-    private final InputFileParser inputFileParser = new InputFileParser();
-    private final MissionRunner missionRunner = new MissionRunner();
+    private static final InputFileParser inputFileParser = new InputFileParser();
+    private static final MissionRunner missionRunner = new MissionRunner();
 
     public static void main(String[] args) throws IOException {
         checkInputFilePath(args);
-
-        String input = Files.readString(Path.of(args[0]));
-        
-        String output = new RoverMissionApplication().run(input);
+        List<String> parsedInput = inputFileParser.readLines(Path.of(args[0]));
+        String output = run(parsedInput);
         writeReport(output);
+    }
+
+    public static String run(List<String> parsedInput) {
+        MissionPlan missionPlan = parseMissionPlan(parsedInput);
+
+        return missionPlan.missions().stream()
+            .map(mission -> runMission(missionPlan, mission))
+            .collect(joining(System.lineSeparator()));
     }
 
     private static void checkInputFilePath(String[] args) {
@@ -40,18 +51,59 @@ public class RoverMissionApplication {
         StringBuilder outputBuilder = new StringBuilder();
         outputBuilder.append(System.lineSeparator());
         outputBuilder.append(output).append(System.lineSeparator());
-        LOGGER.log(Level.INFO, outputBuilder.toString());
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.log(Level.INFO, outputBuilder.toString());
+        }
     }
 
-    public String run(String input) {
-        MissionPlan missionPlan = inputFileParser.parseMissionPlan(input);
+    private static MissionPlan parseMissionPlan(List<String> parsedInput) {
+        Plateau plateau = parsePlateau(parsedInput.get(0));
+        List<Mission> missions = new ArrayList<>();
 
-        return missionPlan.missions().stream()
-            .map(mission -> runMission(missionPlan, mission))
-            .collect(joining(System.lineSeparator()));
+        for (int i = 1; i < parsedInput.size(); i += 2) {
+            Rover rover = parseRover(parsedInput.get(i));
+            missions.add(new Mission(rover, parseCommands(parsedInput.get(i + 1))));
+        }
+
+        return new MissionPlan(plateau, missions);
     }
 
-    private String runMission(MissionPlan missionPlan, Mission mission) {
+    private static List<Command> parseCommands(String commands) {
+        return commands.chars()
+            .mapToObj(RoverMissionApplication::toCommand)
+            .toList();
+    }
+
+    private static Command toCommand(int command) {
+        return switch (command) {
+            case 'L' -> Command.LEFT;
+            case 'R' -> Command.RIGHT;
+            case 'M' -> Command.MOVE;
+            default -> throw new IllegalArgumentException("Unknown command: " + (char) command);
+        };
+    }
+
+    private static Plateau parsePlateau(String line) {
+        String[] tokens = line.split("\\s+");
+        if (tokens.length != 2) {
+            throw new IllegalArgumentException("Invalid plateau line: " + line);
+        }
+
+        return new Plateau(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]));
+    }
+
+    private static Rover parseRover(String line) {
+        String[] tokens = line.split("\\s+");
+        if (tokens.length != 3) {
+            throw new IllegalArgumentException("Invalid rover line: " + line);
+        }
+
+        Position position = new Position(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]));
+        Direction direction = Direction.fromCode(tokens[2]);
+        return new Rover(position, direction);
+    }
+
+    private static String runMission(MissionPlan missionPlan, Mission mission) {
         missionRunner.run(mission, missionPlan.plateau());
 
         Rover rover = mission.rover();
