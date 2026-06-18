@@ -39,7 +39,7 @@ MMRMMRMRRM
 
 | # | Decision | Behaviour |
 |---|----------|-----------|
-| 1 | **Plateau boundary** | A move that would take a rover outside the plateau is **ignored** — the rover stays in place. No exception is thrown. This is a conservative default; the rule can be changed to allow boundary-crossing if the business requires it. |
+| 1 | **Plateau boundary** | A move that would take a rover outside the plateau is **ignored** — the rover stays in place. No exception is thrown. However, an informative warning log is printed. This is a conservative default; the rule can be changed to allow boundary-crossing if the business requires it. |
 | 2 | **Rover collisions** | Collisions are **ignored** — rovers are treated as independent agents and may occupy the same coordinates simultaneously. This assumption can be revisited if collision detection becomes a requirement. |
 | 3 | **Input validation** | The input file is strictly validated before parsing (plateau format, rover position format, command characters, overall file structure). Any malformed input raises an explicit exception with a clear error message. |
 
