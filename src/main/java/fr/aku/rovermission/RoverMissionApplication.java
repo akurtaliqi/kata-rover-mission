@@ -6,6 +6,8 @@ import fr.aku.rovermission.application.MissionRunner;
 import fr.aku.rovermission.infrastructure.InputFileParser;
 import fr.aku.rovermission.domain.Rover;
 
+import static java.util.stream.Collectors.joining;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,13 +22,21 @@ public class RoverMissionApplication {
     private final MissionRunner missionRunner = new MissionRunner();
 
     public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            throw new IllegalArgumentException("Expected exactly one input file path");
-        }
+        checkInputFilePath(args);
 
         String input = Files.readString(Path.of(args[0]));
         
         String output = new RoverMissionApplication().run(input);
+        writeReport(output);
+    }
+
+    private static void checkInputFilePath(String[] args) {
+        if (args.length != 1) {
+            throw new IllegalArgumentException("Expected exactly one input file path");
+        }
+    }
+
+    private static void writeReport(String output) {
         StringBuilder outputBuilder = new StringBuilder();
         outputBuilder.append(System.lineSeparator());
         outputBuilder.append(output).append(System.lineSeparator());
@@ -38,8 +48,7 @@ public class RoverMissionApplication {
 
         return missionPlan.missions().stream()
             .map(mission -> runMission(missionPlan, mission))
-            .reduce((first, second) -> first + System.lineSeparator() + second)
-            .orElse("");
+            .collect(joining(System.lineSeparator()));
     }
 
     private String runMission(MissionPlan missionPlan, Mission mission) {
@@ -52,4 +61,5 @@ public class RoverMissionApplication {
             rover.direction().code()
         );
     }
+
 }

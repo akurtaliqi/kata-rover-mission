@@ -1,35 +1,39 @@
 package fr.aku.rovermission.domain;
 
-public enum Direction {
-    NORTH, 
-    EAST, 
-    SOUTH, 
-    WEST;
+import java.util.Arrays;
 
-    public static Direction fromCode(String code) {
-        return switch (code) {
-            case "N" -> NORTH;
-            case "E" -> EAST;
-            case "S" -> SOUTH;
-            case "W" -> WEST;
-            default -> throw new IllegalArgumentException("Unknown direction: " + code);
-        };
+public enum Direction {
+    NORTH("N", "W", "E"),
+    EAST("E", "N", "S"),
+    SOUTH("S", "E", "W"),
+    WEST("W", "S", "N");
+
+    private final String leftCode;
+    private final String rightCode;
+    private final String code;
+
+    Direction(String code, String leftCode, String rightCode) {
+        this.code = code;
+        this.leftCode = leftCode;
+        this.rightCode = rightCode;
     }
 
+    public static Direction fromCode(String code) {
+        return Arrays.stream(values())
+                .filter(direction -> direction.code.equals(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown direction: " + code));
+    }
+    
     public String code() {
-        return switch (this) {
-            case NORTH -> "N";
-            case EAST -> "E";
-            case SOUTH -> "S";
-            case WEST -> "W";
-        };
+        return code;
     }
 
     public Direction left() {
-        return values()[(this.ordinal() + 3) % 4];
-    }   
+        return fromCode(leftCode);
+    }
 
     public Direction right() {
-        return values()[(this.ordinal() + 1) % 4];
+        return fromCode(rightCode);
     }
 }
