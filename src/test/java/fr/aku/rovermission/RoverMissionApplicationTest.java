@@ -9,7 +9,7 @@ class RoverMissionApplicationTest {
 
     @Test
     void sample_input_produces_expected_output() {
-        List<String> input = List.of(
+        var input = List.of(
                 "5 5",
                 "1 2 N",
                 "LMLMLMLMM",
@@ -17,7 +17,7 @@ class RoverMissionApplicationTest {
                 "MMRMMRMRRM"
         );
 
-        String output = new RoverMissionApplication().run(input);
+        final String output = RoverMissionApplication.run(input);
 
         assertEquals(String.join(System.lineSeparator(),
                 "1 3 N",
