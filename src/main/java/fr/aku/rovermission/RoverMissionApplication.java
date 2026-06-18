@@ -51,9 +51,7 @@ public class RoverMissionApplication {
         StringBuilder outputBuilder = new StringBuilder();
         outputBuilder.append(System.lineSeparator());
         outputBuilder.append(output).append(System.lineSeparator());
-        if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, outputBuilder.toString());
-        }
+        LOGGER.log(Level.INFO, outputBuilder.toString());
     }
 
     private static MissionPlan parseMissionPlan(List<String> parsedInput) {
@@ -70,17 +68,8 @@ public class RoverMissionApplication {
 
     private static List<Command> parseCommands(String commands) {
         return commands.chars()
-            .mapToObj(RoverMissionApplication::toCommand)
+            .mapToObj(command -> Command.fromCode((char) command))
             .toList();
-    }
-
-    private static Command toCommand(int command) {
-        return switch (command) {
-            case 'L' -> Command.LEFT;
-            case 'R' -> Command.RIGHT;
-            case 'M' -> Command.MOVE;
-            default -> throw new IllegalArgumentException("Unknown command: " + (char) command);
-        };
     }
 
     private static Plateau parsePlateau(String line) {
