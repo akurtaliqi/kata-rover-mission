@@ -13,7 +13,7 @@ class RoverTest {
     private final MissionRunner missionRunner = new MissionRunner();
 
     @Test
-    void runMissionFromOneTwoNorthEndsAtOneThreeNorth() {
+    void run_mission_from_one_two_north_ends_at_one_three_north() {
         Rover rover = new Rover(new Position(1, 2), Direction.NORTH);
         Mission mission = new Mission(rover, inputFileParser.parseCommands("LMLMLMLMM"));
         Plateau plateau = new Plateau(5, 5);

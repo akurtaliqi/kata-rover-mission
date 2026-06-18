@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class RoverMissionAppTest {
 
     @Test
-    void sampleInputProducesExpectedOutput() {
+    void sample_input_produces_expected_output() {
         String input = String.join(System.lineSeparator(),
             "5 5",
             "1 2 N",

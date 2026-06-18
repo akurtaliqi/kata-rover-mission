@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PositionTest {
 
     @Test
-    void moveNorthFromOneTwoGivesOneThree() {
+    void move_north_from_one_two_gives_one_three() {
         Position start = new Position(1, 2);
 
         Position result = start.move(Direction.NORTH);
@@ -16,7 +16,7 @@ class PositionTest {
     }
 
     @Test
-    void moveWestFromOneTwoGivesZeroTwo() {
+    void move_west_from_one_two_gives_zero_two() {
         Position start = new Position(1, 2);
 
         Position result = start.move(Direction.WEST);

@@ -13,7 +13,7 @@ class InputFileParserTest {
     private final InputFileParser parser = new InputFileParser();
 
     @Test
-    void parseLmlmlmlmm() {
+    void parse_lmlmlmlmm() {
         assertEquals(List.of(
             Command.LEFT,
             Command.MOVE,
@@ -28,7 +28,7 @@ class InputFileParserTest {
     }
 
     @Test
-    void rejectUnknownCommand() {
+    void reject_unknown_command() {
         assertThrows(IllegalArgumentException.class, () -> parser.parseCommands("LMX"));
     }
 }
