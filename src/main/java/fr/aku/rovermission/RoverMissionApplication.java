@@ -25,8 +25,12 @@ public class RoverMissionApplication {
         }
 
         String input = Files.readString(Path.of(args[0]));
+        
         String output = new RoverMissionApplication().run(input);
-        LOGGER.log(Level.INFO, output);
+        StringBuilder outputBuilder = new StringBuilder();
+        outputBuilder.append(System.lineSeparator());
+        outputBuilder.append(output).append(System.lineSeparator());
+        LOGGER.log(Level.INFO, outputBuilder.toString());
     }
 
     public String run(String input) {

@@ -23,4 +23,14 @@ class RoverTest {
         assertEquals(new Position(1, 3), rover.position());
         assertEquals(Direction.NORTH, rover.direction());
     }
+
+    @Test
+    void move_outside_plateau_is_ignored_and_rover_stays_in_place() {
+        Rover rover = new Rover(new Position(5, 5), Direction.NORTH);
+        Plateau plateau = new Plateau(5, 5);
+
+        rover.move(plateau);
+
+        assertEquals(new Position(5, 5), rover.position());
+    }
 }

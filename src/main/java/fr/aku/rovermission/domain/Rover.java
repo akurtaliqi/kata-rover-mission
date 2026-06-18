@@ -1,6 +1,9 @@
 package fr.aku.rovermission.domain;
 
+import java.util.logging.Logger;
+
 public class Rover {
+    private static final Logger LOGGER = Logger.getLogger(Rover.class.getName());
     private Position position;
     private Direction direction;
 
@@ -22,7 +25,7 @@ public class Rover {
         if (plateau.isValidPosition(newPosition)) {
             position = newPosition;
         } else {
-            throw new IllegalArgumentException("Invalid move: " + newPosition);
+            LOGGER.warning("Move ignored: position %s is outside the plateau.".formatted(newPosition));
         }
     }
 
