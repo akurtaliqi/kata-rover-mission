@@ -1,6 +1,7 @@
 package fr.aku.rovermission;
 
 import java.io.IOException;
+import static java.lang.System.lineSeparator;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class RoverMissionApplication {
 
         return missionPlan.missions().stream()
                 .map(mission -> runMission(missionPlan, mission))
-                .collect(joining(System.lineSeparator()));
+                .collect(joining(lineSeparator()));
     }
 
     private static void checkInputFilePath(String[] args) {
@@ -47,8 +48,8 @@ public class RoverMissionApplication {
 
     private static void writeReport(String output) {
         StringBuilder outputBuilder = new StringBuilder();
-        outputBuilder.append(System.lineSeparator());
-        outputBuilder.append(output).append(System.lineSeparator());
+        outputBuilder.append(lineSeparator());
+        outputBuilder.append(output).append(lineSeparator());
         LOGGER.log(Level.INFO, outputBuilder.toString());
     }
 
