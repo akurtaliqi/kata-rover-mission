@@ -4,6 +4,16 @@ A Java implementation of the [Mars Rover kata](https://kata-log.rocks/mars-rover
 
 NASA deploys robotic rovers on a rectangular plateau on Mars. Each rover is given an initial position (x, y, direction) and a sequence of commands (`L`, `R`, `M`) to navigate the grid. The application processes an input file containing the plateau size and rover instructions, then outputs the final position and heading of each rover.
 
+## Architecture
+
+The project follows a simple 3-layer architecture:
+
+- `domain`: pure business logic. Contains `Rover`, `Plateau`, `Position`, `Direction`, and `Command`.
+- `application`: use-case orchestration. Contains `Mission` (one rover + its commands), `MissionPlan` (plateau + missions), and `MissionRunner` (command execution).
+- `infrastructure`: external resource access. Contains `InputFileParser` to read and clean the input file.
+
+`RoverMissionApplication` wires these components together.
+
 ## Build
 
 ```powershell
