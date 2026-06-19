@@ -49,7 +49,7 @@ public class RoverMissionApplication {
     private static void writeReport(String output) {
         StringBuilder outputBuilder = new StringBuilder();
         outputBuilder.append(lineSeparator());
-        outputBuilder.append(output).append(lineSeparator());
+        outputBuilder.append(output);
         LOGGER.log(Level.INFO, outputBuilder.toString());
     }
 
